@@ -82,7 +82,7 @@ type DataModel() as x =
         } |> Async.Start
 
     member public x.ShowHelp () =
-        let url = "http://www.google.com"
+        let url = "https://thomas-qm.github.io/RichPresenceClient/"
         Process.Start(new ProcessStartInfo("cmd", sprintf "/c start %s" (url.Replace("&", "^&") )))
 
 let mutable mainmodel =
