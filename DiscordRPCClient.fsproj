@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="DiscordRPCClient.MainWindow.xaml">
+      <LogicalName>DiscordRPCClient.MainWindow.xaml</LogicalName>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="DiscordRPCClient.App.xaml">
+      <LogicalName>DiscordRPCClient.App.xaml</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Rpc.fs" />
+    <Compile Include="Model.fs" />
+    <Compile Include="MainWindow.fs" />
+    <Compile Include="App.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup />
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.6.2-build5654-beta" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.6.2-build5654-beta" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="res\icon.ico"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="discord-rpc-csharp-master\Discord RPC\DiscordRPC.csproj" />
+  </ItemGroup>
+
+</Project>
