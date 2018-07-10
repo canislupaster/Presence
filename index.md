@@ -18,6 +18,7 @@ To add Rich Presence, scroll to the bottom and click enable Rich Presence:
 2. Press Reconnect.
 3. Wait until the status says ``Ready``.
 4. You are connected!
+
 # 3. Adding Text
 You can set the state and details using the textboxes:
 
@@ -45,5 +46,4 @@ Entering invalid values might crash the client, but will most likely do nothing.
 # Cross platform and other features
 I'm happy to add these if enough want them.
 
-# Discord
-https://discord.gg/8pK5sAY
+# [Discord](https://discord.gg/8pK5sAY)
