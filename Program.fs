@@ -11,7 +11,7 @@ open RPC
 
 [<EntryPoint>]
 let main argv =
-    //mainmodel.RunRPC ()
+    mainmodel.RunRPC ()
 
     let app =   AppBuilder.Configure<App>()
                     .UsePlatformDetect()

@@ -43,8 +43,11 @@ type DataModel() as x =
             x.SStatus "Connecting"
             let! client = RPCMailbox.PostAndAsyncReply (fun i -> Reconnect (x.AppId, i))
 
-            client.OnError.Add (fun err -> x.SStatus err.Message)
+            client.OnError.Add (fun err -> err.Message |> sprintf "Error: %s" |> x.SStatus)
+            client.OnConnectionFailed.Add (fun err -> err |> sprintf "Connection failed: %A" |> x.SStatus)
             client.OnReady.Add (fun _ -> x.SStatus "Ready")
+
+            client.Initialize () |> ignore
         } |> Async.Start
 
     member public x.UpdateImage () =

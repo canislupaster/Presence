@@ -19,7 +19,6 @@ let rec RPCLoop (client:DiscordRpcClient option) (x:MailboxProcessor<RpcMsg>) = 
             | Reconnect (x, reply), y ->
                 match y with | Some y -> y.Dispose () | None -> ()
                 let newc = new DiscordRpcClient (x, false)
-                newc.Initialize () |> ignore
                 reply.Reply newc
 
                 newc |> Some
