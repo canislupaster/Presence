@@ -1,6 +1,8 @@
 # Discord Rich Presence Client
 This app lets you customize your Discord status using Rich Presence. Download the latest version [here](https://github.com/Thomas-QM/RichPresenceClient/releases).
 
+![UI](./img/2018-08-03-18-17-37.png)
+
 # 1. Make your app
 [Go to the Discord developers site](https://discordapp.com/developers/applications/me) and click New App to make your Rich Presence app:
 
