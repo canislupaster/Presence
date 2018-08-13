@@ -12,6 +12,12 @@ open System.Threading.Tasks
 open System.ComponentModel
 open RPC
 
+open System.Text.RegularExpressions
+
+let (|RegexMatch|_|) pattern (groupnum:int) input =
+        let m = Regex.Match(input,pattern)
+        if (m.Success) then Some m.Groups.[groupnum].Value else None
+
 type DataModel() as x =
     inherit ViewModelBase ()
 
@@ -25,10 +31,12 @@ type DataModel() as x =
         cecEvent.Trigger (x, new PropertyChangedEventArgs(name))
 
     member val Status = "..." with get,set
-    member val AppId="454740937009266688" with get,set
+    member val AppId="465995275563958272" with get,set
     member val UpdateTime = 15 with get,set
     member val Slideshow = true with get,set
     member val ImageNum = 1 with get, set
+    member val Image = "doge" with get, set
+    member val SmallImage = "smoldoggo" with get, set
     member val MaxImageNum = 8 with get,set
     member val State = "state" with get,set
     member val Details = "details" with get,set
@@ -61,9 +69,12 @@ type DataModel() as x =
     member public x.Update () =
         x.SStatus "Updating"
         x.UpdateImage ()
-        (match x.Slideshow with
-            | true -> {Num=x.ImageNum; MaxNum=Some x.MaxImageNum; Time=TimeSpan.FromSeconds (float x.UpdateTime) |> Some; State=x.State; Details=x.Details}
-            | false -> {Num=x.ImageNum; MaxNum=None; Time=None; State=x.State; Details=x.Details})
+
+        let slide = match x.Slideshow with
+                    | true -> Some {N=x.ImageNum; Max=x.MaxImageNum; Time=TimeSpan.FromSeconds (float x.UpdateTime);}
+                    | false -> None
+
+        {Slideshow=slide; State=x.State; Details=x.Details; LargeImage=x.Image; SmallImage=x.SmallImage}
             |> Update |> RPCMailbox.Post
         x.SStatus "Ready"
 

@@ -33,17 +33,20 @@ You can set the state and details using the textboxes:
 The time between updates option lets you specify how often updates happen, in seconds. You can also update manually using the update button.
 
 # 4. Adding images
-Scroll to the bottom of the app settings and you should find the assets section:
 
-![2018-07-10-00-51-32](img/2018-07-10-00-51-32.png)
+On the left you should find the Art Assets section:
 
-The Rich Presence Client only works with large, numbered images, like so:
+![assets](img/artassets.png)
 
-![2018-07-10-00-53-11](img/2018-07-10-00-53-11.png)
+You can add images, then (for example) you can configure the client for a slideshow using this:
 
-Then you can configure the client for a slideshow using this:
+![](/img/assetexample.png)
 
-![2018-07-10-01-01-49](img/2018-07-10-01-01-49.png)
+and this:
+
+![](/img/clientexample.png)
+
+(Also, since doge is unnumbered, it will be excluded, but you can use it for a small image)
 
 You can disable the slideshow option to not auto increment the current image (which happens on updates).
 Entering invalid values might crash the client, but will most likely do nothing. (FYI: error handling seems a bit funky with discord rich presence, if something goes wrong, don't expect any errors reported)

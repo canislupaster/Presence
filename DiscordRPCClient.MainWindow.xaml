@@ -31,48 +31,52 @@
             <Setter Property="FontSize" Value="14" />
         </Style>
         <Style Selector="Border.Status" >
-          <Setter Property="Background" Value="LightGray" />
-          <Setter Property="HorizontalAlignment" Value="Center" />
-          <Setter Property="Padding" Value="10" />
+            <Setter Property="Background" Value="LightGray" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Padding" Value="10" />
         </Style>
         <Style Selector="Border.Status TextBlock" >
-          <Setter Property="FontFamily" Value="Courier New" />
+            <Setter Property="FontFamily" Value="Courier New" />
         </Style>
 
         <Style Selector="Button.Symbol" >
-          <Setter Property="Height" Value="45" />
-          <Setter Property="Width" Value="45" />
-          <Setter Property="FontSize" Value="40" />          
+            <Setter Property="Height" Value="45" />
+            <Setter Property="Width" Value="45" />
+            <Setter Property="FontSize" Value="40" />
         </Style>
     </Window.Styles>
 
     <Grid HorizontalAlignment="Stretch"
-          VerticalAlignment="Stretch"
-          Margin="15"
-          ColumnDefinitions="*,*,Auto" RowDefinitions="*,*,*,*,*,*,*,*,*" >
+            VerticalAlignment="Stretch"
+            Margin="15"
+          ColumnDefinitions="*,*,Auto" RowDefinitions="*,*,*,*,*,*,*,*,*,*" >
 
-      <TextBlock Grid.Row="0" Grid.Column="0" >App ID:</TextBlock>
-      <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding AppId, Mode=TwoWay}" />
-      <Button Grid.Row="0" Grid.Column="2" Command="{Binding Reconnect}" >Reconnect</Button>
+        <TextBlock Grid.Row="0" Grid.Column="0" >App ID:</TextBlock>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding AppId, Mode=TwoWay}" />
+        <Button Grid.Row="0" Grid.Column="2" Command="{Binding Reconnect}" >Reconnect</Button>
 
-      <TextBlock Grid.Row="1" Grid.Column="0" >Details:</TextBlock>
-      <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Details, Mode=TwoWay}" />
-      <TextBlock Grid.Row="2" Grid.Column="0" >State:</TextBlock>
-      <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding State, Mode=TwoWay}" />
-      <TextBlock Grid.Row="3" Grid.Column="0" >Image:</TextBlock>
-      <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ImageNum, Mode=TwoWay}" />
-      <TextBlock Grid.Row="4" Grid.Column="0" >Slideshow:</TextBlock>
-      <CheckBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" IsChecked="{Binding Slideshow, Mode=TwoWay}" />
-      <TextBlock Grid.Row="5" Grid.Column="0" >Images:</TextBlock>
-      <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" IsEnabled="{Binding Slideshow}" Text="{Binding MaxImageNum, Mode=TwoWay}" />
+        <TextBlock Grid.Row="1" Grid.Column="0" >Details:</TextBlock>
+        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Details, Mode=TwoWay}" />
+        <TextBlock Grid.Row="2" Grid.Column="0" >State:</TextBlock>
+        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding State, Mode=TwoWay}" />
+        <TextBlock Grid.Row="3" Grid.Column="0" >Image:</TextBlock>
+        <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Image, Mode=TwoWay}" />
+        <TextBlock Grid.Row="4" Grid.Column="0" >Small Image:</TextBlock>
+        <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding SmallImage, Mode=TwoWay}" />
+        <TextBlock Grid.Row="5" Grid.Column="0" >Slideshow:</TextBlock>
+        <CheckBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" IsChecked="{Binding Slideshow, Mode=TwoWay}" />
+        <TextBlock Grid.Row="6" Grid.Column="0" >Image #:</TextBlock>
+        <TextBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" IsEnabled="{Binding Slideshow}" Text="{Binding ImageNum, Mode=TwoWay}" />
+        <TextBlock Grid.Row="7" Grid.Column="0" >Images:</TextBlock>
+        <TextBox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" IsEnabled="{Binding Slideshow}" Text="{Binding MaxImageNum, Mode=TwoWay}" />
 
-      <TextBlock Grid.Row="6" Grid.Column="0" >Time between updates*:</TextBlock>
-      <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding UpdateTime, Mode=TwoWay}" />
-      <Button Grid.Row="6" Grid.Column="2" Command="{Binding Update}" >Update</Button>
-        
-      <TextBlock Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Classes="Details" >*15 seconds minimum to not be rate limited</TextBlock>
+        <TextBlock Grid.Row="8" Grid.Column="0" >Time between updates*:</TextBlock>
+        <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding UpdateTime, Mode=TwoWay}" />
+        <Button Grid.Row="8" Grid.Column="2" Command="{Binding Update}" >Update</Button>
 
-      <Border Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Classes="Status" ><TextBlock Text="{Binding Status}" /></Border>
-      <Button Grid.Row="8" Grid.Column="2" Classes="Symbol" Command="{Binding ShowHelp}" >?</Button>
+        <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Classes="Details" >*15 seconds minimum to not be rate limited</TextBlock>
+
+        <Border Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" Classes="Status" ><TextBlock Text="{Binding Status}" /></Border>
+        <Button Grid.Row="9" Grid.Column="2" Classes="Symbol" Command="{Binding ShowHelp}" >?</Button>
     </Grid>
 </Window>
