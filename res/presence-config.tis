@@ -1,0 +1,253 @@
+Date.toDur = function () {
+    return ((((this.hour * 60) + this.minute) * 60) + this.second) * 1s;
+}
+
+Duration.toDate = function () {
+    //thisll kill performance or so i feel even though its basic numer WHAT IS WRONG WITH ME
+    var ms = this.milliseconds;
+    var seconds = (ms / 1000.0).toInteger() % 60;
+    var minutes = ((ms / (1000.0*60.0)).toInteger() % 60);
+    var hours   = (ms / (1000.0*60.0*60.0)).toInteger();
+    //thanx https://stackoverflow.com/questions/10874048/from-milliseconds-to-hour-minutes-seconds-and-milliseconds#10874133
+    //you lifted my self doubt
+
+    return Date.local(0,0,0, hours, minutes, seconds);
+}
+
+class PresenceConfig: Behavior {
+    const CharLimit = 2;
+    this var elapsed = 0s;
+    this var active;
+
+    function added(tpresence) {
+        var timep = this#time-presences.append({div});
+
+        timep.prototype = TimePresence;
+        timep.attached(tpresence);
+        timep.activate();
+
+        this.validate();
+    }
+
+    function show(presence) {
+        this.active = null;
+
+        //TODO PASTE BUTTON FOR APP ID
+        this.$content(
+            <fieldset.center#presence-config>
+                <legend>Presence Settings</legend>
+                <div.controls><label>Application Id</label> <button#paste><img src="img/clipboard-paste.svg" /></button><input#application_id value="{presence.application_id}" /></div>
+
+                <div#time-presences></div>
+            </fieldset>
+        );
+
+        for (var tpresence in presence.time_presences) this.added(tpresence);
+        if (this#time-presences[presence.active_presence]) this#time-presences[presence.active_presence].activate();
+
+        this.$append(
+            <button#add-section.center>Add section</button>
+        );
+
+        DragDrop {
+            what    : ".time-presence",
+            notBefore: "button, span, input",
+            where   : "#container#time-presences",
+            easeDrop: Animation.Ease.OutQuad,
+            acceptDrag: :draggable {
+                draggable.activate();
+                return #moving;
+            },
+            dropped: :draggable, from {
+                self#container.update(draggable);
+            }
+        };
+
+        this.validate();
+    }
+
+    event click $(#paste) (evt) {
+        var prev = this#application_id.value;
+
+        this#application_id.value = view.clipboard(#get, #text);
+        if (!handle(this.validate())) this#application_id.value = prev;
+    }
+
+    function emptied() {
+        this.$content(<div.center><h1>No presence selected.</h1><h2>Please select a presence to configure it.</h2></div>);
+    }
+
+    function validate() {
+        if (!(/^\d+$/g).test(this#application_id.value)) return [#error, "Application id is not valid!"];
+        for (var v in $$(.char-limit)) {
+            if (v.value.length < CharLimit) v.attributes.addClass("invalid");
+                else v.attributes.removeClass("invalid");
+        }
+
+        for (var tp in this.$$(.time-presence)) {
+            var x = tp.validate();
+            if (x.isError()) return x;
+        }
+
+        return [#ok, true];
+    }
+
+    event change $(*) (evt, changed) {
+        if (changed.value == undefined) changed.preventChange();
+        if (!(handle(this.validate()) && !this.update(null))) changed.preventChange();
+    }
+    
+    function update(e) {
+        var obj = {time_presences: [], name: Presence.active.name, elapsed: this.elapsed, application_id: this#application_id.value};
+        if (this.active) { obj.active_presence = this.active.nodeIndex; } else { obj.active_presence = 0; }
+        for (var tp in this.$$(.time-presence)) obj.time_presences.push(tp.update(this));
+        
+        return !handle(view.update_presence(obj));
+    }
+    
+    function worker_update(newActive, elp, appIdValid) {
+        if (!locked) {
+            this.elapsed = elp;
+
+            if (this#time-presences[newActive])
+                this#time-presences[newActive].activate();
+
+            if (appIdValid) this#application_id.attributes.removeClass("invalid");
+                else this#application_id.attributes.addClass("invalid");
+        }
+    }
+}
+
+class TimePresence: Behavior {
+    function Add() {
+        this.on("click", function(evt, root) {
+            self#container.added(self.$$(.time-presence).length > 0 ? self.$$(.time-presence)[0].update(self#container) : handle(view.new_time_presence()));
+        });
+    }
+
+    this var isForever = false;
+
+    function update(pcfg) {
+        var length = null;
+        if (this.isForever == false && this#length.value) {
+            length = this#length.value.toDur();
+        }
+
+        var o = { details: this#details.value, state: this#state.value, tooltip: this#tooltip.value, small_image: this#small_image.value, large_image: this#large_image.value, show_time: this#show_time.value, length: length };
+
+        if (pcfg.active == this && o.length && o.length > 0s) {
+            this#progress.attributes.removeClass("collapsed");
+            this#progress.value = pcfg.elapsed.seconds/o.length.seconds;
+
+        } else this#progress.attributes.addClass("collapsed");
+
+        this#title.text = o.details;
+
+        return o;
+    }
+
+    function updateForever(isforever) {
+        this.isForever = isforever;
+
+        this#length.attributes.removeClass("active");
+        this#forever.attributes.removeClass("active");
+        if (isforever) this#forever.attributes.addClass("active");
+            else this#length.attributes.addClass("active");
+
+        self#container.update(this);
+    }
+
+    function attached(tpresence) {
+        this.$content(
+            <div.titlebar>
+                <span#title>{tpresence.details}</span>
+                
+                <div.buttons>
+                    <button#delete><img src="img/window-x-thick.svg" /></button>
+                </div>
+            </div>
+
+            <div>
+                <fieldset>
+                    <legend>Text</legend>
+                    
+                    <div.controls><label>Details</label> <input.char-limit id="details" value="{tpresence.details}" /></div>
+                    <div.controls><label>State</label> <input.char-limit id="state" value="{tpresence.state}" /></div>
+                    <div.controls><label>Tooltip</label> <input.char-limit id="tooltip" value="{tpresence.tooltip}" /></div>
+                </fieldset>
+                <fieldset>
+                    <legend>Images</legend>
+                    
+                    <div.controls><label>Large image</label> <input id="large_image" value="{tpresence.large_image}" /></div>
+                    <div.controls><label>Small image</label> <input id="small_image" value="{tpresence.small_image}" /></div>
+                </fieldset>
+
+                <fieldset>
+                    <div.controls><label>Show time as</label>
+                        <select id="show_time" >
+                            <option value="elapsed" selected="{tpresence.show_time == "elapsed"}" >Elapsed</option>
+                            <option value="remaining" selected="{tpresence.show_time == "remaining"}" >Remaining</option>
+                            <option value="none" selected="{tpresence.show_time == "none"}" >None</option>
+                        </select>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div.timebar>
+                <div.length>
+                    <label>Length</label>
+                    <input|time.timetoggle#length value="00:00:00" />
+                    <button.timetoggle#forever>Forever</button>
+                </div>
+
+                <progress#progress max="1" />
+            </div>
+        )
+
+        this.attributes.addClass("time-presence");
+
+        if (tpresence.length) {
+            this#length.value = tpresence.length.toDate();
+        } else this.isForever = true;
+
+        this.updateForever(this.isForever);
+    }
+
+    function activate() {
+        var pcfg = self#container;
+        if (pcfg.active) pcfg.active.attributes.removeClass("active");
+        
+        pcfg.active = this;
+        this.attributes.addClass("active");
+
+        pcfg.update(this);
+    }
+
+    event click $(#forever) (evt, forever) {
+        this.updateForever(true);
+    }
+
+    event click $(#length) (evt, length) {
+        this.updateForever(false);
+    }
+
+    function validate() {
+        if (this#show_time.value == "remaining" && this.isForever) this#show_time.attributes.addClass("invalid");
+            else this#show_time.attributes.removeClass("invalid");
+
+        return [#ok, true];
+    }
+
+    event click $(#delete) (evt, del) {
+        var pcfg = self#container;
+        if (pcfg.active == this) pcfg.active = null;
+
+        this.remove();
+
+        pcfg.update(this);
+    }
+
+    event click (evt) {
+        this.activate();
+    }
+}

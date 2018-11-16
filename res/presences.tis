@@ -1,0 +1,167 @@
+class Presence: Behavior {
+    var active = null;
+
+    function Added(presence, i) {
+        var elem = $(#presences).insert({div});
+        elem.prototype = Presence;
+
+        elem.attached(presence);
+        elem.activate();
+        
+        return elem;
+    }
+    
+    function Add() {
+        this.on("click", function() {
+            var presence = handle(view.add_presence(null));
+            Added(presence[0], presence[1]);
+        });
+    }
+
+    function Load(presences, cur) {
+        for (var p in presences) {
+            Added(p, presences.length);
+        }
+        
+        if($(#presences)[cur]) $(#presences)[cur].activate(); else self#container.emptied();
+
+        DragDrop {
+            what    : ".presence",
+            notBefore: "button, span, input",
+            where   : "#presences",
+            easeDrop: Animation.Ease.OutQuad,
+            acceptDrag: :draggable {
+                draggable.activate();
+                draggable.oldI = draggable.i();
+                return #moving;
+            },
+            dropped: :draggable, from {
+                if (handle(view.reorder_presence(draggable.oldI, draggable.i()))) {
+                    draggable.oldI = null;
+                    draggable.activate();
+                } else draggable.nodeIndex = draggable.oldI;
+            }
+        };
+    }
+
+    function attached(presence) {
+        this.name = presence.name;
+        
+        this.attributes.addClass("presence");
+        this.$content(
+            <span.name>{this.name}</span>
+            <button.delete><img src="img/window-x-thick.svg" /></button>
+        );
+    }
+
+    function i() {
+        return this.nodeIndex;
+    }
+
+    function destroy() {
+        if (handle(view.del_presence(this.i()))) {
+            if (active == this) active = null;
+            
+            var i = this.i();
+            this.remove();
+
+            var presences = $(#presences);
+            if (presences.length > 0 && presences.length > i) presences[i].activate();
+                else if (presences.length > 0) presences[0].activate();
+                else self#container.emptied();
+        }
+    }
+
+    event click $(button.delete) (evt, button) {
+        this.destroy();
+    }
+
+    //TODO: move rename to new class
+    this var edit = false;
+    event dblclick $(.name) (evt, name) {
+        if (!this.edit) {
+            name.$content(<input value="{this.name}" />);
+            this.edit = true;
+
+            this.$(.name input).state.focus = true;
+        }
+
+        return true;
+    }
+
+    event blur $(.name input) (evt, input) {
+        var name = input.parent;
+        input.remove();
+        
+        name.text = this.name;
+        this.edit = false;
+        
+        return true;
+    }
+
+    event change $(.name input) (evt, input) {
+        var newname = input.value;
+        if (handle(view.rename_presence(this.i(), newname))) this.name = newname;
+    }
+
+    function activate() {
+        var presence = handle(view.activate_presence(this.i()));
+        if (presence) {
+            if (active) active.attributes.removeClass("active");
+
+            active = this;
+            this.attributes.addClass("active");
+            self#container.show(presence);
+        }
+
+        return presence;
+    }
+
+    function copy() {
+        view.clipboard(#put, {text: handle(view.ser_presence(this.i()))});
+    }
+    
+    function cut() {
+        view.clipboard(#put, {text: handle(view.ser_presence(this.i()))});
+        this.destroy();
+    }
+
+    function Paste() {
+        var deser = handle(view.de_presence(view.clipboard(#get, #text)));
+        if (deser) {
+            var presence = handle(view.add_presence(deser));
+            Added(presence[0], presence[1]);
+        }
+    }
+
+    event click (evt, root) {
+        this.activate();
+        return true;
+    }
+
+    function onControlEvent(evt) {
+        if(evt.type == Event.MENU_ITEM_CLICK)  {
+            var menu_item = evt.target; 
+            
+            if (menu_item.id == "copy") this.copy();
+                else if (menu_item.id == "cut") this.cut();
+                else if (menu_item.id == "paste") Paste();
+        }
+    }
+}
+
+self#presences.onControlEvent = function(evt) {
+    if(evt.type == Event.MENU_ITEM_CLICK)  {
+        if (evt.target.id == "paste") Presence.Paste();
+    }
+}
+
+event keypress (evt) {
+    if (evt.shortcutKey && (evt.target == self#presences || evt.target == self#container)) {
+        switch (evt.keyCode) {
+            case 3: Presence.active.copy(); break;
+            case 24: Presence.active.cut(); break;
+            case 22: Presence.Paste(); break;
+        }
+    }
+}

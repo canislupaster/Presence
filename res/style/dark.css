@@ -1,0 +1,26 @@
+@const WINDOW_BG: #161721;
+@const WINDOW_BG_HOVER: #0d2839;
+@const WINDOW_BG_OVERLAY: #17222b;
+@const WINDOW_BG_OVERLAY_HOVER: #173342;
+
+@const WINDOW_COLOR: whitesmoke;
+@const WINDOW_COLOR_INACTIVE: #DFDFDF;
+@const WINDOW_COLOR_HOVER: white;
+
+@const WINDOW_EDGE: #0F344F;
+@const WINDOW_ACTIVE_EDGE: #2bafff;
+
+@font-face 
+{
+    font-family: "PT Sans Regular";
+    src: url('../img/PT_Sans-Web-Regular.ttf');
+}
+
+@font-face 
+{
+    font-family: "Open Sans";
+    src: url('../img/OpenSans-Regular.ttf');
+}
+
+@const HEADER_FONT: "PT Sans Regular";
+@const BODY_FONT: "Open Sans";

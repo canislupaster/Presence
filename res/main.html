@@ -1,0 +1,27 @@
+<html window-icon="img/appicon.png" window-frame="solid-with-shadow" window-resizable window-blurbehind="auto" theme="dark" >
+    <style src="style/main.css" />
+    <script type="text/tiscript" src="main.tis" />
+    
+    <body>
+        <div#splash></div>
+
+        <toolbar>
+            <img src="img/appicon.png" role=window-caption />
+
+            <tabs>
+                <div.dragspace role=window-caption></div>
+                
+                <div#presences></div>
+                <button#add-presence><img src="img/plus.svg" /></button>
+            </tabs>
+
+            <window-buttons>
+                <button#minimize ><img src="img/window-minimize.svg" /></button>
+                <button#close ><img src="img/window-x.svg" /></button>
+            </window-buttons>
+        </toolbar>
+
+        <div#container>
+        </div>
+    </body>
+</html>

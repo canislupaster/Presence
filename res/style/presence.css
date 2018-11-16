@@ -1,0 +1,62 @@
+#add-presence button {
+    width: 20dip;
+}
+
+#add-presence {
+    aspect: Presence.Add;
+
+    margin: 0 10dip;
+    background: transparent;
+}
+
+tabs {
+    width: 90%;
+    height: *;
+    flow: horizontal;
+}
+
+#presences {
+    flow: horizontal;
+    vertical-align: bottom;
+    width: 3*;
+    height: *;
+    
+    overflow: hidden;
+    overflow-x: scroll-indicator;
+
+    context-menu: url(../context-menu-presences.html);
+}
+
+.presence {
+    padding: 4dip 10dip;
+    width: 1*;
+    flow: horizontal;
+
+    context-menu: url(../context-menu.html);
+}
+
+.presence * {
+    background: none;
+}
+
+.presence:hover {
+    background: @WINDOW_BG_HOVER;
+}
+
+.presence.active {
+    background: @WINDOW_BG;
+}
+
+.presence .name input {
+    padding: 0; margin: 0; border: 0;
+}
+
+.presence button {
+    margin-left: *;
+}
+
+.presence img {
+    width: 14dip;
+    vertical-align: middle;
+    margin-left: *;
+}

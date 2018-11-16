@@ -1,0 +1,23 @@
+[package]
+name = "discord_rpc_client_gui"
+version = "0.1.0"
+authors = ["Thomas-QM <thomas@engineeringvirtue.net>"]
+
+[dependencies]
+sciter-rs = "*"
+libc = "0.2.39"
+
+float_duration = "0.3.3"
+lazy_static = "1.1.0"
+rayon = "1.0.3"
+serde = "1.0.80"
+serde_derive = "1.0.80"
+serde_json = "1.0.32"
+dirs = "1.0.4"
+
+
+[dependencies.discord-rpc-sdk]
+path = "rust-discord-rpc"
+
+[dependencies.systray]
+path = "systray-rs"

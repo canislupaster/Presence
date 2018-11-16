@@ -1,0 +1,94 @@
+#container {
+    flow: vertical;
+}
+
+fieldset {
+    margin-top: 20%%;
+    background: transparent;
+    padding: 15dip;
+}
+
+legend {
+    background: transparent;
+    color: @WINDOW_COLOR_INACTIVE;
+}
+
+.controls {
+    flow: horizontal-flow;
+}
+
+.controls label, .controls input {
+    vertical-align: middle;
+}
+
+.controls label {
+    margin-right: *;
+}
+
+.controls input {
+    margin-left: *;
+}
+
+.time-presence {
+    background: @WINDOW_BG_OVERLAY;
+    margin: 15dip 0;
+}
+
+.time-presence.active {
+    background: @WINDOW_BG_OVERLAY_HOVER;
+}
+
+.time-presence .titlebar {
+    margin-bottom: *;
+    flow: horizontal;
+}
+
+.time-presence .titlebar #title {
+    padding: 8dip;
+    font-size: 1.2em;
+}
+
+.time-presence .titlebar .buttons {
+    margin-left: *;
+}
+
+.time-presence .titlebar .buttons button img {
+    margin-left: 50%%;
+}
+
+#add-section {
+    aspect: TimePresence.Add;
+
+    padding: 5dip *;
+}
+
+.timebar {
+    flow: horizontal;
+    padding: 5dip;
+    background: @WINDOW_BG_HOVER;
+    vertical-align: middle;
+}
+
+.timebar #progress {
+    vertical-align: middle;
+    width: 80%%;
+    margin: 0 10dip;
+}
+
+.timebar .length {
+    width: *;
+}
+
+.timebar .length label {
+    margin-right: *;
+}
+
+.timebar .timetoggle {
+    background: transparent;
+    color: @WINDOW_COLOR_INACTIVE;
+}
+
+.timebar .timetoggle.active {
+    color: @WINDOW_COLOR_HOVER;
+    background: @WINDOW_BG;
+}

@@ -1,0 +1,57 @@
+body.dialog-shown {
+  filter: blur(2dip);
+  transition: foreground-color(linear,1400ms);
+}
+
+/* dialog "window" frame */
+div.dialog-frame 
+{
+  position:absolute;
+  width: 300dip;
+  height: max-content;
+  min-width: min-content;
+  left: *;
+  right: *;
+  top: 0.4*;
+  bottom: 0.6*;
+
+  background: @WINDOW_BG_HOVER;
+  color: @WINDOW_COLOR;
+
+  border-radius: 0 0 10dip 10dip; /* square top / round bottom */
+  cursor:default;
+  padding:10dip;
+}
+
+/* dialog "window" caption */
+div.dialog-frame > caption 
+{
+  font-weight: bold;
+  line-height: 28dip;
+  padding:0 10dip;
+}
+
+/* dialog body element */
+div.dialog-frame > :nth-child(2) 
+{
+  height: *;
+  padding: 10dip;
+}
+
+/* dialog button bar */
+div.dialog-frame > text.buttons
+ {
+  margin:20dip 10dip 10dip *;
+  width: max-intrinsic;
+  white-space: nowrap;
+  border-spacing:10dip;
+  flow:horizontal;
+}
+
+div.dialog-frame > text.buttons > button 
+{
+  width: 55dip;
+  text-align: center;
+  vertical-align: middle;
+  padding: 5dip 10dip;
+}

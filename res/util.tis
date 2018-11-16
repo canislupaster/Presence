@@ -1,0 +1,27 @@
+function InputExt() {
+    this.prevValue = this.value;
+
+    this.preventChange = function () {
+        this.value = this.prevValue;
+    }
+
+    event change (evt) {
+        this.prevValue = this.value;
+    }
+}
+
+function Spinner() {
+    function flipflop() { this.state.expanded = !this.state.expanded; }
+
+    this.start = function() {
+        this.state.collapsed = false;
+        this.state.expanded = true; // triggers transition/animation
+        this.on("animationend.spinner", flipflop );
+    } 
+    
+    this.stop = function() {
+        this.state.expanded = false;
+        this.off("animationend.spinner");
+        this.state.collapsed = true;
+    }
+}

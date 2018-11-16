@@ -1,0 +1,37 @@
+toolbar {
+    width: 100%;
+    background: transparent;
+}
+
+toolbar .dragspace {
+    vertical-align: middle;
+    width: *;
+    height: *;
+}
+
+toolbar > img {
+    margin: 0;
+    width: 30dip;
+}
+
+window-buttons {
+    width: 10%;
+}
+
+window-buttons > button#minimize {
+    aspect: MinimizeButton;
+}
+
+window-buttons > button#close:hover {
+    aspect: CloseButton;
+
+    background: darkred;
+}
+
+window-buttons button, #add-presence {
+    padding: 5dip;
+}
+
+window-buttons button img {
+    width: 18dip;
+}

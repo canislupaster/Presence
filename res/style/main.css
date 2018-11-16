@@ -1,0 +1,183 @@
+@import "dark.css"; 
+
+@import "presence.css";
+@import "presence-config.css";
+
+@import "toolbar.css";
+@import "lightbox-dialog.css";
+
+html, body {
+    background: transparent;
+}
+
+.plus, .minus {
+    display: none;
+}
+
+body, button, input, select, caption, progress {
+    color: @WINDOW_COLOR;
+    font-family: @BODY_FONT;
+    fill: @WINDOW_COLOR_INACTIVE;
+    text-selection-caret-color: @WINDOW_COLOR;
+    direction: ltr;
+    font-size: 1.05em;
+}
+
+button:hover {
+    color: @WINDOW_COLOR_HOVER;
+    fill: @WINDOW_COLOR_HOVER;
+    cursor: pointer;
+}
+
+button, input, select, progress {
+    background: @WINDOW_BG;
+}
+
+progress {
+    foreground: @WINDOW_COLOR;
+    list-style-image: none;
+}
+
+option {
+    color: black;
+}
+
+option:current {
+    color: white;
+}
+
+input, select {
+    aspect: InputExt;
+
+    border: 1px solid @WINDOW_EDGE;
+}
+
+.invalid, .invalid:focus {
+    border: 1px solid #FF3333;
+}
+
+input:focus {
+    border: 1px solid @WINDOW_ACTIVE_EDGE;
+}
+
+button:hover {
+    color: @WINDOW_COLOR_HOVER;
+    background: @WINDOW_BG_HOVER;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-shadow: 0 0 40dip @WINDOW_OVERLAY_SHADOW;
+}
+
+body {
+    padding: 0;
+}
+
+.center {
+    margin: 0 50%%;
+}
+
+#splash {
+    position: absolute;
+
+    height: 100%;
+    width: 100%;
+    top: 0; bottom: 0; left: 0; right: 0;
+
+    background: url("../img/splash.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    opacity: 1;
+    transition: opacity(linear, 1s);
+}
+
+#splash:collapsed {
+    opacity: 0;
+}
+
+#splash:not(:animating):collapsed {
+    display: none;
+}
+
+h1, h2, h3, h4 {
+    font-weight: normal;
+    font-family: @HEADER_FONT;
+}
+
+#container {
+    prototype: PresenceConfig;
+
+    flow: vertical;
+    height: *;
+    background: @WINDOW_BG;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding: 10%% 0;
+}
+
+@set v-flat-scrollbar {
+  .prev { display:none; }
+  .next { display:none; }
+  
+  .base,
+  .next-page, 
+  .prev-page,
+  .slider { background: none; }
+ 
+  .slider { background: @WINDOW_EDGE; }
+    
+  .slider:hover  { background: @WINDOW_OVERLAY_HOVER; }
+  
+  .slider:active { background: @WINDOW_ACTIVE_EDGE; }
+  
+  .base { width: 8dip; } /* explicit declaration of its width */
+  .corner { background: transparent; }
+}
+
+@set h-flat-scrollbar {
+    .prev { display:none; }
+    .next { display:none; }
+    
+    .base,
+    .next-page, 
+    .prev-page,
+    .slider { background: transparent; }
+   
+    .slider { background: @WINDOW_EDGE; }
+      
+    .slider:hover  { background: @WINDOW_OVERLAY_HOVER; }
+    
+    .slider:active { background: @WINDOW_ACTIVE_EDGE; }
+    
+    .base { height: 6dip; background-clip:content-box; } /* explicit declaration of its width */
+    .corner { background: transparent; }
+  }
+
+* {
+    vertical-scrollbar: v-flat-scrollbar;
+    horizontal-scrollbar: h-flat-scrollbar;
+}
+
+.collapsed {
+    display: none;
+}
+
+.spinner {
+    aspect: Spinner;
+
+    transform: scale(0.5);
+};
+
+.spinner:collapsed {
+    transform: scale(0);
+    transition: transform(sine-in-out, 400ms);
+}
+
+.spinner:expanded {
+    transform: scale(1);
+    transition: transform(sine-in-out, 600ms);
+}
