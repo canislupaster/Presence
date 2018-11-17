@@ -79,6 +79,8 @@ function DragDrop(def)
   // init-loop-commit:
   function doDD(el, vx, vy) // DD loop
   {
+    //EDITED
+    locked = true;
    // 1) ask initiator about our draggable:
     if( def.acceptDrag ) 
     {
@@ -176,7 +178,7 @@ function DragDrop(def)
   // 7) run user's finalizer   
     if(def.after) 
       el.post(def.after);
-   
+
     return true;
   }
   
@@ -619,7 +621,10 @@ function DragDrop(def)
 
   function ddShutdown() { // cancel DD loop and remove traces of this DragDrop call.
     ddCancel(); 
-    self.unsubscribe(mouseEventMonitor); 
+    self.unsubscribe(mouseEventMonitor);
+
+    //EDITED
+    locked = false;
   }
 
   self.subscribe(mouseEventMonitor, Event.MOUSE); 
