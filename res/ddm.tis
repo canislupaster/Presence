@@ -74,6 +74,9 @@ function DragDrop(def)
     
     // Be polite with the GC:
     dd_target = dd_placeholder_src = dd_placeholder_dst = dd_source = null;
+
+    //EDITED
+    locked = false;
   }
   
   // init-loop-commit:
@@ -622,9 +625,6 @@ function DragDrop(def)
   function ddShutdown() { // cancel DD loop and remove traces of this DragDrop call.
     ddCancel(); 
     self.unsubscribe(mouseEventMonitor);
-
-    //EDITED
-    locked = false;
   }
 
   self.subscribe(mouseEventMonitor, Event.MOUSE); 
