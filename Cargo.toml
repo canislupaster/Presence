@@ -1,6 +1,6 @@
 [package]
 name = "discord_rpc_client_gui"
-version = "1.0.2"
+version = "1.0.3"
 authors = ["Thomas-QM <thomas@engineeringvirtue.net>"]
 
 [dependencies]
