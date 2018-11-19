@@ -43,7 +43,7 @@ class PresenceConfig: Behavior {
         );
 
         for (var tpresence in presence.time_presences) this.added(tpresence);
-        if (this#time-presences[presence.active_presence]) this#time-presences[presence.active_presence].activate();
+        if (this#time-presences[presence.active_presence]) this#time-presences[presence.active_presence].activated();
 
         this.$append(
             <button#add-section.center>Add section</button>
@@ -97,7 +97,7 @@ class PresenceConfig: Behavior {
         if (!(handle(this.validate()) && !this.update(null))) changed.preventChange();
     }
     
-    function update(e) {
+    function update() {
         var obj = {time_presences: [], name: Presence.active.name, elapsed: this.elapsed, application_id: this#application_id.value};
         if (this.active) { obj.active_presence = this.active.nodeIndex; } else { obj.active_presence = 0; }
         for (var tp in this.$$(.time-presence)) obj.time_presences.push(tp.update(this));
@@ -110,7 +110,9 @@ class PresenceConfig: Behavior {
             this.elapsed = elp;
 
             if (this#time-presences[newActive])
-                this#time-presences[newActive].activate();
+                this#time-presences[newActive].activated();
+
+            this.update();
 
             if (appIdValid) this#application_id.attributes.removeClass("invalid");
                 else this#application_id.attributes.addClass("invalid");
@@ -154,7 +156,7 @@ class TimePresence: Behavior {
         if (isforever) this#forever.attributes.addClass("active");
             else this#length.attributes.addClass("active");
 
-        self#container.update(this);
+        self#container.update();
     }
 
     function attached(tpresence) {
@@ -213,14 +215,18 @@ class TimePresence: Behavior {
         this.updateForever(this.isForever);
     }
 
-    function activate() {
+    function activated() {
         var pcfg = self#container;
         if (pcfg.active) pcfg.active.attributes.removeClass("active");
         
         pcfg.active = this;
         this.attributes.addClass("active");
+    }
 
-        pcfg.update(this);
+    function activate() {
+        this.activated();
+
+        self#container.update();
     }
 
     event click $(#forever) (evt, forever) {
@@ -244,7 +250,7 @@ class TimePresence: Behavior {
 
         this.remove();
 
-        pcfg.update(this);
+        pcfg.update();
     }
 
     event click (evt) {

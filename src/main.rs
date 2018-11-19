@@ -111,8 +111,10 @@ fn main() {
     cfgpath.push("presence_config.json");
 
     let state = {
-        if let Ok(x) = fs::read_to_string(&cfgpath) {
-            serde_json::from_str(&x).expect("Error parsing config")
+        if let Some(x) = fs::read_to_string(&cfgpath).ok()
+            .and_then(|x| serde_json::from_str(&x).ok()) {
+
+            x
         } else {
             State::new()
         }

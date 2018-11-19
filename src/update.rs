@@ -62,69 +62,80 @@ pub fn start_updater(state: MState, wstate: WState) {
     loop {
         thread::sleep(stddur);
 
-        let presence = {
+        let (presence, update) = {
             let mut s = state.lock().unwrap();
+            let mut update = s.update;
+            s.update = false;
 
             let cur = s.current;
             let p: Option<&mut Presence> = s.presences.get_mut(cur);
-            if let Some(presence) = p {
-                if let Some(&TimePresence { length: Some(length), .. }) = presence.current() {
-                    presence.elapsed += dur;
 
-                    if presence.elapsed > length {
-                        presence.active_presence = (presence.active_presence + 1) % presence.time_presences.len();
-                        presence.elapsed = FloatDuration::zero();
+            let pres = {
+                if let Some(presence) = p {
+                    if let Some(&TimePresence { length: Some(length), .. }) = presence.current() {
+                        presence.elapsed += dur;
+
+                        if presence.elapsed > length {
+                            presence.active_presence = (presence.active_presence + 1) % presence.time_presences.len();
+                            presence.elapsed = FloatDuration::zero();
+
+                            update = true;
+                        }
                     }
-                }
 
-                presence.current().cloned().map(|x| (presence.clone(), x))
-            } else { None }
+                    presence.current().cloned().map(|x| (presence.clone(), x))
+                } else { None }
+            };
+
+            (pres, update)
         };
 
         if let Some((pres, tpres)) = presence {
-            let mut app_res = ac.get_client(pres.application_id);
+            if update {
+                let mut app_res = ac.get_client(pres.application_id);
 
-            if let Some(mut client) = app_res {
-                let (start_time, end_time) = match tpres.show_time {
-                    ShowTime::Elapsed | ShowTime::Remaining => {
-                        let start = SystemTime::now() - pres.elapsed.to_std().unwrap();
+                if let Some(mut client) = app_res {
+                    let (start_time, end_time) = match tpres.show_time {
+                        ShowTime::Elapsed | ShowTime::Remaining => {
+                            let start = SystemTime::now() - pres.elapsed.to_std().unwrap();
 
-                        let end = match (tpres.show_time, tpres.length) {
-                            (ShowTime::Remaining, Some(dur)) => {
-                                Some(start + dur.to_std().unwrap())
-                            },
-                            _ => None
-                        };
+                            let end = match (tpres.show_time, tpres.length) {
+                                (ShowTime::Remaining, Some(dur)) => {
+                                    Some(start + dur.to_std().unwrap())
+                                },
+                                _ => None
+                            };
 
-                        (Some(start), end)
-                    },
-                    _ => (None, None)
-                };
+                            (Some(start), end)
+                        },
+                        _ => (None, None)
+                    };
 
-                let l = pres.time_presences.len();
-                let (party_size, party_max) = if l > 1 {
-                    (Some((pres.active_presence+1) as u32), Some(l as u32))
-                } else { (None, None) };
+                    let l = pres.time_presences.len();
+                    let (party_size, party_max) = if l > 1 {
+                        (Some((pres.active_presence + 1) as u32), Some(l as u32))
+                    } else { (None, None) };
 
-                let _ = client.update_presence(RichPresence {
-                    details: str_opt(tpres.details, DISCORD_CHAR_LIMIT),
-                    state: str_opt(tpres.state, DISCORD_CHAR_LIMIT),
-                    start_time,
-                    end_time,
+                    let _ = client.update_presence(RichPresence {
+                        details: str_opt(tpres.details, DISCORD_CHAR_LIMIT),
+                        state: str_opt(tpres.state, DISCORD_CHAR_LIMIT),
+                        start_time,
+                        end_time,
 
-                    large_image_key: Some(tpres.large_image),
-                    small_image_key: Some(tpres.small_image),
-                    small_image_text: str_opt(tpres.tooltip.clone(), DISCORD_CHAR_LIMIT),
-                    large_image_text: str_opt(tpres.tooltip, DISCORD_CHAR_LIMIT),
+                        large_image_key: Some(tpres.large_image),
+                        small_image_key: Some(tpres.small_image),
+                        large_image_text: str_opt(tpres.tooltip, DISCORD_CHAR_LIMIT),
+                        small_image_text: None,
 
-                    party_id: None,
-                    party_size,
-                    party_max,
-                    spectate_secret: None,
-                    join_secret: None
-                }).map_err(|x| println!("ERROR: {:?}", x));
+                        party_id: None,
+                        party_size,
+                        party_max,
+                        spectate_secret: None,
+                        join_secret: None
+                    }).map_err(|x| println!("ERROR: {:?}", x));
 
-                client.run_callbacks();
+                    client.run_callbacks();
+                }
             }
 
             if let WinState::Open(ref pcfg) = *wstate.lock().unwrap() {

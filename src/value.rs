@@ -120,7 +120,8 @@ impl Into<Value> for State {
     fn into(self) -> Value {
         vmap!{
             "current" => self.current as i32,
-            "presences" => vec_val(self.presences)
+            "presences" => vec_val(self.presences),
+            "update" => self.update
         }
     }
 }
@@ -129,7 +130,8 @@ impl FromValue for State {
     fn from_value(v: &Value) -> Option<Self> {
         Some(State {
             current: v.get_item("current").to_int()? as usize,
-            presences: val_vec(&v.get_item("presences"))?
+            presences: val_vec(&v.get_item("presences"))?,
+            update: v.get_item("update").to_bool()?
         })
     }
 }

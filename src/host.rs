@@ -18,29 +18,30 @@ fn handle_script_call(state: MState, wstate: WState, name: &str, args: &[Value])
     let mut s = state.lock().unwrap();
 
     let ok: Value = true.into();
+    s.update = true;
 
     match (name, args) {
         ("add_presence", [presence]) => {
-            let p = if presence.is_null() { Presence::new(&s) }
-                else { parse_arg(presence)? };
+            let p = if presence.is_null() { Presence::new(&s) } else { parse_arg(presence)? };
 
             s.presences.push(p.clone());
 
             let mut ret = Value::array(0);
-            ret.push(p); ret.push((s.presences.len() as i32)-1);
+            ret.push(p);
+            ret.push((s.presences.len() as i32) - 1);
 
             Ok(Some(ret))
         },
 
         ("del_presence", [i]) => {
-            let i= parse_arg::<i32>(i)? as usize;
+            let i = parse_arg::<i32>(i)? as usize;
             s.presences.remove(i);
 
             Ok(Some(ok))
         },
 
         ("rename_presence", [i, new_name]) => {
-            let i= parse_arg::<i32>(i)? as usize;
+            let i = parse_arg::<i32>(i)? as usize;
             let name = parse_arg::<String>(new_name)?;
 
             if name.len() > 16 {
@@ -75,7 +76,7 @@ fn handle_script_call(state: MState, wstate: WState, name: &str, args: &[Value])
         },
 
         ("activate_presence", [i]) => {
-            let i= parse_arg::<i32>(i)? as usize;
+            let i = parse_arg::<i32>(i)? as usize;
             s.current = i;
 
             Ok(Some(s.presences[i].clone().into()))

@@ -39,6 +39,8 @@ pub struct Presence {
 pub struct State {
     pub current: usize,
     pub presences: Vec<Presence>,
+
+    pub update: bool
 }
 
 #[derive(Clone)]
@@ -84,7 +86,7 @@ impl<T> Vecci<T> for Option<T> {
 
 impl State {
     pub fn new () -> State {
-        State { current: 0, presences: Vec::new() }
+        State { current: 0, presences: Vec::new(), update: true }
     }
 }
 
