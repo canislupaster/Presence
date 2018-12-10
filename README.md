@@ -1,6 +1,6 @@
 # Presence
 
-A simple discord rich presence client, written in rust & sciter.
+A simple discord rich presence client, written in rust & sciter. Check [releases](https://github.com/Thomas-QM/Presence/releases) for downloads (win x64 only, sorry i dont/am too lazy to have other machines, dw you can build it yourself).
 
 ![screenshot](./.pastes/2018-11-15-19-20-38.png)
 
