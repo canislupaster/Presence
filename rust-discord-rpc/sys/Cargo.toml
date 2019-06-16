@@ -1,0 +1,14 @@
+[package]
+name = "discord-rpc-sys"
+version = "0.1.0"
+authors = ["Difarem <difarem@gmail.com>"]
+
+description = "FFI bindings to the Discord RPC SDK"
+repository = "https://github.com/difarem/rust-discord-rpc"
+keywords = ["discord", "rpc", "ffi"]
+categories = ["external-ffi-bindings", "api-bindings", "games"]
+license = "MIT"
+
+[build-dependencies]
+bindgen = "0.26.3"
+cmake = "0.1.29"

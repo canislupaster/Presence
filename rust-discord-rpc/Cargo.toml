@@ -1,0 +1,21 @@
+[workspace]
+members = ["sys"]
+
+[package]
+name = "discord-rpc-sdk"
+version = "0.1.1"
+authors = ["Difarem <difarem@gmail.com>"]
+
+description = "Rust bindings to the Discord RPC SDK"
+repository = "https://github.com/difarem/rust-discord-rpc"
+readme = "README.md"
+keywords = ["discord", "rpc"]
+categories = ["api-bindings", "games"]
+license = "MIT"
+
+[dependencies]
+libc = "0.2.39"
+
+[dependencies.discord-rpc-sys]
+path = "sys"
+version = "0.1.0"
