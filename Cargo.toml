@@ -5,19 +5,15 @@ authors = ["Thomas-QM <thomas@engineeringvirtue.net>"]
 
 [dependencies]
 sciter-rs = "*"
-libc = "0.2.39"
+libc = "0.2.58"
 
 float_duration = "0.3.3"
-lazy_static = "1.1.0"
-rayon = "1.0.3"
-serde = "1.0.80"
-serde_derive = "1.0.80"
-serde_json = "1.0.32"
-dirs = "1.0.4"
-
+lazy_static = "1.3.0"
+rayon = "1.1.0"
+serde = "1.0.92"
+serde_derive = "1.0.92"
+serde_json = "1.0.39"
+dirs = "2.0.1"
 
 [dependencies.discord-rpc-sdk]
 path = "rust-discord-rpc"
-
-[dependencies.systray]
-path = "systray-rs"

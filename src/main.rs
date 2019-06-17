@@ -3,7 +3,6 @@
 
 #[macro_use]
 extern crate sciter;
-extern crate systray;
 extern crate discord_rpc_sdk;
 extern crate libc;
 
